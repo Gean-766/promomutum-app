@@ -396,15 +396,46 @@
     gap: 12px;
     padding: 12px;
   }
-  .lightbox {
-    position: fixed;
+  .lightbox {position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.95);
     z-index: 999;
     display: none;
     align-items: center;
     justify-content: center;
+    animation: fadeIn 0.2s ease;
   }
+  .lightbox.active { display: flex; }
+  .lightbox img {
+    max-width: 95vw;
+    max-height: 95vh;
+    object-fit: contain;
+    border-radius: 8px;
+    animation: zoomIn 0.2s ease;
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes zoomIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }}
 
   .modal-promo-emoji { font-size: 20px; }
   .modal-promo-info { flex: 1; }
@@ -612,6 +643,7 @@
 
 <!-- LIGHTBOX -->
 <div id="lightbox" class="lightbox">
+  <button class="lightbox-close" id="lightboxClose">✕</button>
   <img id="lightboxImg" src="" alt="">
 </div>
   <!-- BOTTOM NAV -->
@@ -895,10 +927,14 @@
     $('lightboxImg').src = url;
     $('lightbox').classList.add('active');
   };
-  $('lightbox').addEventListener('click', function() {
-    this.classList.remove('active');
+  function fecharLightbox() {
+    $('lightbox').classList.remove('active');
     $('lightboxImg').src = '';
+  }
+  $('lightbox').addEventListener('click', function(e) {
+    if (e.target === this) fecharLightbox();
   });
+  $('lightboxClose').addEventListener('click', fecharLightbox);
   loadData();
 })();
 </script>
