@@ -211,6 +211,21 @@
     font-size: 24px;
     flex-shrink: 0;
   }
+  .promo-img-box {
+    width: 52px;
+    height: 52px;
+    border-radius: var(--radius-sm);
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  .modal-promo-img {
+    width: 100%;
+    border-radius: var(--radius);
+    margin: 0 24px 16px;
+    width: calc(100% - 48px);
+    object-fit: cover;
+    max-height: 280px;
+  }
   .promo-content { flex: 1; min-width: 0; }
   .promo-product {
     font-size: 15px;
@@ -703,8 +718,8 @@
       }
       var lojaId = p.lojas ? p.lojas.id : '';
 
-      return '<div class="promo-item" data-loja="' + lojaId + '">' +
-        '<div class="promo-emoji-box">' + emoji + '</div>' +
+     return '<div class="promo-item" data-loja="' + lojaId + '">' +
+        (p.imagem_url ? '<img class="promo-img-box" src="' + p.imagem_url + '" onerror="this.style.display=\'none\'">' : '<div class="promo-emoji-box">' + emoji + '</div>') +
         '<div class="promo-content">' +
           '<div class="promo-product">' + esc(p.produto_nome) + '</div>' +
           '<div class="promo-store">🏪 ' + esc(lojaNome) +
@@ -794,7 +809,8 @@
       list.innerHTML = storePromos.map(function(p) {
         var emoji = (p.categorias_produto && p.categorias_produto.icone) || '📦';
         var cat = (p.categorias_produto && p.categorias_produto.nome) || '';
-        return '<div class="modal-promo-item">' +
+       var imgHtml = p.imagem_url ? '<img src="' + p.imagem_url + '" class="modal-promo-img" onerror="this.style.display=\'none\'">' : '';
+        return imgHtml + '<div class="modal-promo-item">' +
           '<div class="modal-promo-emoji">' + emoji + '</div>' +
           '<div class="modal-promo-info"><div class="modal-promo-name">' + esc(p.produto_nome) + '</div>' +
           '<div class="modal-promo-cat">' + cat + ' • /' + (p.unidade||'un') + '</div></div>' +
