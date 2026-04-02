@@ -565,7 +565,6 @@
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="header">
   <div class="header-top">
     <div class="header-logo">🏷️ PromoMutum</div>
@@ -578,16 +577,13 @@
   </div>
 </div>
 
-<!-- PAGE: HOME -->
 <div id="pageHome" class="page active">
-  <!-- Categories -->
   <div class="categories">
     <div class="categories-scroll" id="categoriesScroll">
       <button class="cat-chip active" data-cat="all">🔥 Todas</button>
     </div>
   </div>
 
-  <!-- Promos -->
   <div class="section">
     <div class="section-header">
       <h2 class="section-title" id="promoTitle">Promoções do Dia</h2>
@@ -605,7 +601,6 @@
   </div>
 </div>
 
-<!-- PAGE: LOJAS -->
 <div id="pageLojas" class="page">
   <div class="section" style="padding-top:20px;">
     <div class="section-header">
@@ -624,15 +619,13 @@
   </div>
 </div>
 
-<!-- PROMO DETAIL MODAL -->
 <div id="promoModal" class="modal-bg">
   <div class="modal-sheet" id="promoModalSheet">
     <div class="modal-handle"></div>
     <div id="promoModalContent"></div>
   </div>
 </div>
-  <!-- STORE DETAIL MODAL -->
-<div id="storeModal" class="modal-bg">
+  <div id="storeModal" class="modal-bg">
   <div class="modal-sheet" id="storeModalSheet">
     <div class="modal-handle"></div>
     <div class="modal-store-header">
@@ -648,13 +641,11 @@
   </div>
 </div>
 
-<!-- LIGHTBOX -->
 <div id="lightbox" class="lightbox">
   <button class="lightbox-close" id="lightboxClose">✕</button>
   <img id="lightboxImg" src="" alt="">
 </div>
-  <!-- BOTTOM NAV -->
-<div class="bottom-nav">
+  <div class="bottom-nav">
   <button class="nav-item active" id="navHome">
     <span class="nav-icon">🏷️</span>
     <span class="nav-label">Promoções</span>
@@ -869,7 +860,7 @@
     }
 
     var storePromos = allPromos.filter(function(p) { return p.loja_id === lojaId || (p.lojas && p.lojas.id === lojaId); });
-   var list = $('modalPromoList');
+    var list = $('modalPromoList');
     if (storePromos.length) {
       list.innerHTML = storePromos.map(function(p) {
         var emoji = (p.categorias_produto && p.categorias_produto.icone) || '📦';
@@ -903,8 +894,7 @@
     $('storeModal').classList.add('active');
   }
 
-  // CLOSE MODAL
- // PROMO MODAL
+  // PROMO MODAL
   function openPromoModal(promoId) {
     var p = allPromos.find(function(x) { return x.id === promoId; });
     if (!p) return;
@@ -981,8 +971,7 @@
     $('navHome').classList.remove('active');
   });
 
-  // INIT
- // LIGHTBOX
+  // LIGHTBOX
   window.abrirLightbox = function(url) {
     $('lightboxImg').src = url;
     $('lightbox').classList.add('active');
