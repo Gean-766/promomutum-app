@@ -12,979 +12,990 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-  :root {
-    --bg: #f5f3ee;
-    --bg-card: #ffffff;
-    --bg-search: #ffffff;
-    --green: #1a7a52;
-    --green-dark: #145f40;
-    --green-light: #e6f4ed;
-    --green-glow: rgba(26,122,82,0.08);
-    --orange: #e67e22;
-    --orange-light: #fef6ec;
-    --red-tag: #e74c3c;
-    --text: #1c1c1c;
-    --text-sec: #6b6b6b;
-    --text-muted: #a0a0a0;
-    --border: #ece9e1;
-    --shadow: 0 2px 12px rgba(0,0,0,0.06);
-    --shadow-lg: 0 8px 32px rgba(0,0,0,0.10);
-    --radius: 16px;
-    --radius-sm: 10px;
-    --radius-full: 50px;
-    --safe-top: env(safe-area-inset-top, 0px);
-    --safe-bottom: env(safe-area-inset-bottom, 0px);
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-    padding-bottom: calc(70px + var(--safe-bottom));
-  }
+  :root {
+    --bg: #f5f3ee;
+    --bg-card: #ffffff;
+    --bg-search: #ffffff;
+    --green: #1a7a52;
+    --green-dark: #145f40;
+    --green-light: #e6f4ed;
+    --green-glow: rgba(26,122,82,0.08);
+    --orange: #e67e22;
+    --orange-light: #fef6ec;
+    --red-tag: #e74c3c;
+    --text: #1c1c1c;
+    --text-sec: #6b6b6b;
+    --text-muted: #a0a0a0;
+    --border: #ece9e1;
+    --shadow: 0 2px 12px rgba(0,0,0,0.06);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,0.10);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --radius-full: 50px;
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    padding-bottom: calc(70px + var(--safe-bottom));
+  }
 
-  /* HEADER */
-  .header {
-    background: linear-gradient(135deg, #1a7a52 0%, #1e8f5e 50%, #22a366 100%);
-    padding: calc(16px + var(--safe-top)) 20px 20px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .header-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 16px;
-  }
-  .header-logo {
-    font-size: 22px;
-    font-weight: 800;
-    color: white;
-    letter-spacing: -0.5px;
-  }
-  .header-logo span { opacity: 0.7; font-weight: 500; font-size: 13px; margin-left: 6px; }
-  .header-city {
-    font-size: 12px;
-    color: rgba(255,255,255,0.8);
-    background: rgba(255,255,255,0.15);
-    padding: 4px 12px;
-    border-radius: var(--radius-full);
-    font-weight: 600;
-  }
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #1a7a52 0%, #1e8f5e 50%, #22a366 100%);
+    padding: calc(16px + var(--safe-top)) 20px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .header-logo {
+    font-size: 22px;
+    font-weight: 800;
+    color: white;
+    letter-spacing: -0.5px;
+  }
+  .header-logo span { opacity: 0.7; font-weight: 500; font-size: 13px; margin-left: 6px; }
+  .header-city {
+    font-size: 12px;
+    color: rgba(255,255,255,0.8);
+    background: rgba(255,255,255,0.15);
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+  }
 
-  /* SEARCH */
-  .search-box {
-    position: relative;
-  }
-  .search-input {
-    width: 100%;
-    padding: 14px 16px 14px 44px;
-    border: none;
-    border-radius: var(--radius);
-    font-family: inherit;
-    font-size: 15px;
-    background: white;
-    color: var(--text);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
-    outline: none;
-  }
-  .search-input::placeholder { color: var(--text-muted); }
-  .search-icon {
-    position: absolute;
-    left: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 18px;
-    opacity: 0.4;
-  }
-  .search-clear {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    border: none;
-    background: var(--bg);
-    cursor: pointer;
-    font-size: 14px;
-    display: none;
-    align-items: center;
-    justify-content: center;
-  }
+  /* SEARCH */
+  .search-box {
+    position: relative;
+  }
+  .search-input {
+    width: 100%;
+    padding: 14px 16px 14px 44px;
+    border: none;
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-size: 15px;
+    background: white;
+    color: var(--text);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    outline: none;
+  }
+  .search-input::placeholder { color: var(--text-muted); }
+  .search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    opacity: 0.4;
+  }
+  .search-clear {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: none;
+    background: var(--bg);
+    cursor: pointer;
+    font-size: 14px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
 
-  /* CATEGORIES */
-  .categories {
-    padding: 20px 20px 8px;
-  }
-  .categories-scroll {
-    display: flex;
-    gap: 10px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 8px;
-    scrollbar-width: none;
-  }
-  .categories-scroll::-webkit-scrollbar { display: none; }
-  .cat-chip {
-    scroll-snap-align: start;
-    flex-shrink: 0;
-    padding: 10px 16px;
-    border-radius: var(--radius-full);
-    border: 1.5px solid var(--border);
-    background: var(--bg-card);
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-sec);
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    white-space: nowrap;
-  }
-  .cat-chip:hover, .cat-chip.active {
-    background: var(--green-light);
-    border-color: var(--green);
-    color: var(--green);
-  }
-  .cat-chip.active { font-weight: 700; }
+  /* CATEGORIES */
+  .categories {
+    padding: 20px 20px 8px;
+  }
+  .categories-scroll {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 8px;
+    scrollbar-width: none;
+  }
+  .categories-scroll::-webkit-scrollbar { display: none; }
+  .cat-chip {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+    padding: 10px 16px;
+    border-radius: var(--radius-full);
+    border: 1.5px solid var(--border);
+    background: var(--bg-card);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-sec);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+  .cat-chip:hover, .cat-chip.active {
+    background: var(--green-light);
+    border-color: var(--green);
+    color: var(--green);
+  }
+  .cat-chip.active { font-weight: 700; }
 
-  /* SECTION */
-  .section {
-    padding: 0 20px;
-    margin-bottom: 20px;
-  }
-  .section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 14px;
-  }
-  .section-title {
-    font-size: 18px;
-    font-weight: 800;
-    color: var(--text);
-    letter-spacing: -0.3px;
-  }
-  .section-count {
-    font-size: 12px;
-    color: var(--text-muted);
-    font-weight: 500;
-  }
+  /* SECTION */
+  .section {
+    padding: 0 20px;
+    margin-bottom: 20px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.3px;
+  }
+  .section-count {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
 
-  /* PROMO CARDS */
-  .promo-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .promo-item {
-    background: var(--bg-card);
-    border-radius: var(--radius);
-    padding: 16px;
-    box-shadow: var(--shadow);
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    cursor: pointer;
-    transition: all 0.2s;
-    border: 1.5px solid transparent;
-  }
-  .promo-item:active { transform: scale(0.98); }
-  .promo-item:hover { border-color: var(--green); }
-  .promo-emoji-box {
-    width: 52px;
-    height: 52px;
-    border-radius: var(--radius-sm);
-    background: var(--green-light);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    flex-shrink: 0;
-  }
-  .promo-img-box {
-    width: 52px;
-    height: 52px;
-    border-radius: var(--radius-sm);
-    object-fit: cover;
-    flex-shrink: 0;
-  }
-  .modal-promo-img {
-    width: 100%;
-    border-radius: var(--radius);
-    margin: 0 24px 16px;
-    width: calc(100% - 48px);
-    object-fit: cover;
-    max-height: 280px;
-  }
-  .promo-content { flex: 1; min-width: 0; }
-  .promo-product {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 2px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .promo-store {
-    font-size: 12px;
-    color: var(--text-sec);
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-  .promo-store-dot {
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: var(--text-muted);
-  }
-  .promo-right { text-align: right; flex-shrink: 0; }
-  .promo-old-price {
-    font-size: 12px;
-    color: var(--text-muted);
-    text-decoration: line-through;
-  }
-  .promo-new-price {
-    font-size: 20px;
-    font-weight: 800;
-    color: var(--green);
-    font-family: 'JetBrains Mono', monospace;
-    letter-spacing: -0.5px;
-  }
-  .promo-unit {
-    font-size: 11px;
-    color: var(--text-muted);
-    font-weight: 500;
-  }
-  .promo-discount {
-    display: inline-block;
-    background: var(--red-tag);
-    color: white;
-    font-size: 10px;
-    font-weight: 700;
-    padding: 2px 6px;
-    border-radius: 4px;
-    margin-top: 3px;
-  }
+  /* PROMO CARDS */
+  .promo-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .promo-item {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1.5px solid transparent;
+  }
+  .promo-item:active { transform: scale(0.98); }
+  .promo-item:hover { border-color: var(--green); }
+  .promo-emoji-box {
+    width: 52px;
+    height: 52px;
+    border-radius: var(--radius-sm);
+    background: var(--green-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+  .promo-img-box {
+    width: 52px;
+    height: 52px;
+    border-radius: var(--radius-sm);
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  .modal-promo-img {
+    width: 100%;
+    border-radius: var(--radius);
+    margin: 0 24px 16px;
+    width: calc(100% - 48px);
+    object-fit: cover;
+    max-height: 280px;
+  }
+  .promo-content { flex: 1; min-width: 0; }
+  .promo-product {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .promo-store {
+    font-size: 12px;
+    color: var(--text-sec);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .promo-store-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--text-muted);
+  }
+  .promo-right { text-align: right; flex-shrink: 0; }
+  .promo-old-price {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-decoration: line-through;
+  }
+  .promo-new-price {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--green);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: -0.5px;
+  }
+  .promo-unit {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+  .promo-discount {
+    display: inline-block;
+    background: var(--red-tag);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-top: 3px;
+  }
 
-  /* EMPTY */
-  .empty { text-align: center; padding: 60px 20px; }
-  .empty-icon { font-size: 56px; margin-bottom: 12px; }
-  .empty-title { font-size: 16px; font-weight: 700; color: var(--text-sec); margin-bottom: 4px; }
-  .empty-desc { font-size: 14px; color: var(--text-muted); line-height: 1.5; }
+  /* EMPTY */
+  .empty { text-align: center; padding: 60px 20px; }
+  .empty-icon { font-size: 56px; margin-bottom: 12px; }
+  .empty-title { font-size: 16px; font-weight: 700; color: var(--text-sec); margin-bottom: 4px; }
+  .empty-desc { font-size: 14px; color: var(--text-muted); line-height: 1.5; }
 
-  /* STORE DETAIL MODAL */
-  .modal-bg {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    backdrop-filter: blur(6px);
-    z-index: 300;
-    display: none;
-    align-items: flex-end;
-    justify-content: center;
-  }
-  .modal-bg.active { display: flex; }
-  .modal-sheet {
-    background: var(--bg-card);
-    border-radius: 24px 24px 0 0;
-    width: 100%;
-    max-width: 500px;
-    max-height: 85vh;
-    overflow-y: auto;
-    animation: slideUp 0.3s ease;
-    padding-bottom: var(--safe-bottom);
-  }
-  @keyframes slideUp {
-    from { transform: translateY(100%); }
-    to { transform: translateY(0); }
-  }
-  .modal-handle {
-    width: 40px;
-    height: 4px;
-    border-radius: 2px;
-    background: var(--border);
-    margin: 12px auto 0;
-  }
-  .modal-store-header {
-    padding: 20px 24px;
-    border-bottom: 1px solid var(--border);
-  }
-  .modal-store-name {
-    font-size: 20px;
-    font-weight: 800;
-    color: var(--text);
-    margin-bottom: 4px;
-  }
-  .modal-store-cat {
-    font-size: 13px;
-    color: var(--text-sec);
-    margin-bottom: 12px;
-  }
-  .modal-store-info {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  .modal-info-row {
-    font-size: 13px;
-    color: var(--text-sec);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .modal-info-icon { font-size: 16px; width: 20px; text-align: center; }
-  .modal-whatsapp {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin: 16px 24px 0;
-    padding: 14px;
-    background: #25d366;
-    color: white;
-    border: none;
-    border-radius: var(--radius);
-    font-family: inherit;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-decoration: none;
-  }
-  .modal-whatsapp:hover { background: #1fba59; }
-  .modal-promos-title {
-    padding: 20px 24px 12px;
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--text);
-  }
-  .modal-promo-list {
-    padding: 0 24px 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
- .modal-promo-item {
-    background: var(--bg);
-    border-radius: var(--radius);
-    overflow: hidden;
-    margin-bottom: 12px;
-  }
-  .modal-promo-item-img {
-    width: 100%;
-    max-height: 200px;
-    object-fit: cover;
-    cursor: pointer;
-    display: block;
-  }
-  .modal-promo-item-body {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px;
-  }
-  .lightbox {position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.95);
-    z-index: 999;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    animation: fadeIn 0.2s ease;
-  }
-  .lightbox.active { display: flex; }
-  .lightbox img {
-    max-width: 95vw;
-    max-height: 95vh;
-    object-fit: contain;
-    border-radius: 8px;
-    animation: zoomIn 0.2s ease;
-  }
-  .lightbox-close {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.2);
-    border: none;
-    color: white;
-    font-size: 20px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  @keyframes zoomIn {
-    from { transform: scale(0.8); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }}
+  /* STORE DETAIL MODAL */
+  .modal-bg {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(6px);
+    z-index: 300;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .modal-bg.active { display: flex; }
+  .modal-sheet {
+    background: var(--bg-card);
+    border-radius: 24px 24px 0 0;
+    width: 100%;
+    max-width: 500px;
+    max-height: 85vh;
+    overflow-y: auto;
+    animation: slideUp 0.3s ease;
+    padding-bottom: var(--safe-bottom);
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  .modal-handle {
+    width: 40px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--border);
+    margin: 12px auto 0;
+  }
+  .modal-store-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .modal-store-name {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .modal-store-cat {
+    font-size: 13px;
+    color: var(--text-sec);
+    margin-bottom: 12px;
+  }
+  .modal-store-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .modal-info-row {
+    font-size: 13px;
+    color: var(--text-sec);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .modal-info-icon { font-size: 16px; width: 20px; text-align: center; }
+  .modal-whatsapp {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 16px 24px 0;
+    padding: 14px;
+    background: #25d366;
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .modal-whatsapp:hover { background: #1fba59; }
+  .modal-promos-title {
+    padding: 20px 24px 12px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .modal-promo-list {
+    padding: 0 24px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+ .modal-promo-item {
+    background: var(--bg);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .modal-promo-item-img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    cursor: pointer;
+    display: block;
+  }
+  .modal-promo-item-body {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+  }
+  .lightbox {position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.95);
+    z-index: 999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.2s ease;
+  }
+  .lightbox.active { display: flex; }
+  .lightbox img {
+    max-width: 95vw;
+    max-height: 95vh;
+    object-fit: contain;
+    border-radius: 8px;
+    animation: zoomIn 0.2s ease;
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes zoomIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }}
 
-  .modal-promo-emoji { font-size: 20px; }
-  .modal-promo-info { flex: 1; }
-  .modal-promo-name { font-size: 14px; font-weight: 700; }
-  .modal-promo-cat { font-size: 11px; color: var(--text-muted); }
-  .modal-promo-price {
-    font-size: 16px;
-    font-weight: 800;
-    color: var(--green);
-    font-family: 'JetBrains Mono', monospace;
-  }
-  .modal-close-area {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
+  .modal-promo-emoji { font-size: 20px; }
+  .modal-promo-info { flex: 1; }
+  .modal-promo-name { font-size: 14px; font-weight: 700; }
+  .modal-promo-cat { font-size: 11px; color: var(--text-muted); }
+  .modal-promo-price {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--green);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .modal-close-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
 
-  /* BOTTOM NAV */
-  .bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: var(--bg-card);
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: space-around;
-    padding: 8px 0 calc(8px + var(--safe-bottom));
-    z-index: 200;
-    box-shadow: 0 -2px 12px rgba(0,0,0,0.04);
-  }
-  .nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-    padding: 6px 16px;
-    border: none;
-    background: none;
-    cursor: pointer;
-    font-family: inherit;
-    transition: all 0.2s;
-  }
-  .nav-icon { font-size: 22px; }
-  .nav-label { font-size: 10px; font-weight: 600; color: var(--text-muted); }
-  .nav-item.active .nav-label { color: var(--green); }
+  /* BOTTOM NAV */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-around;
+    padding: 8px 0 calc(8px + var(--safe-bottom));
+    z-index: 200;
+    box-shadow: 0 -2px 12px rgba(0,0,0,0.04);
+  }
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 6px 16px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+  }
+  .nav-icon { font-size: 22px; }
+  .nav-label { font-size: 10px; font-weight: 600; color: var(--text-muted); }
+  .nav-item.active .nav-label { color: var(--green); }
 
-  /* LOADING */
-  .loading {
-    text-align: center;
-    padding: 40px;
-  }
-  .loading-dots {
-    display: inline-flex;
-    gap: 6px;
-  }
-  .loading-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: var(--green);
-    animation: bounce 1.2s ease-in-out infinite;
-  }
-  .loading-dot:nth-child(2) { animation-delay: 0.15s; }
-  .loading-dot:nth-child(3) { animation-delay: 0.3s; }
-  @keyframes bounce {
-    0%, 80%, 100% { transform: scale(0.6); opacity: 0.3; }
-    40% { transform: scale(1); opacity: 1; }
-  }
+  /* LOADING */
+  .loading {
+    text-align: center;
+    padding: 40px;
+  }
+  .loading-dots {
+    display: inline-flex;
+    gap: 6px;
+  }
+  .loading-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: bounce 1.2s ease-in-out infinite;
+  }
+  .loading-dot:nth-child(2) { animation-delay: 0.15s; }
+  .loading-dot:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes bounce {
+    0%, 80%, 100% { transform: scale(0.6); opacity: 0.3; }
+    40% { transform: scale(1); opacity: 1; }
+  }
 
-  /* PAGE: LOJAS */
-  .lojas-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .loja-card {
-    background: var(--bg-card);
-    border-radius: var(--radius);
-    padding: 16px;
-    box-shadow: var(--shadow);
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    cursor: pointer;
-    border: 1.5px solid transparent;
-    transition: all 0.2s;
-  }
-  .loja-card:hover { border-color: var(--green); }
-  .loja-avatar {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: var(--green-light);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    font-weight: 800;
-    color: var(--green);
-    flex-shrink: 0;
-  }
-  .loja-info { flex: 1; }
-  .loja-name { font-size: 15px; font-weight: 700; }
-  .loja-detail { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-  .loja-promos-count {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--green);
-    background: var(--green-light);
-    padding: 4px 10px;
-    border-radius: var(--radius-full);
-  }
+  /* PAGE: LOJAS */
+  .lojas-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .loja-card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    transition: all 0.2s;
+  }
+  .loja-card:hover { border-color: var(--green); }
+  .loja-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--green-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--green);
+    flex-shrink: 0;
+  }
+  .loja-info { flex: 1; }
+  .loja-name { font-size: 15px; font-weight: 700; }
+  .loja-detail { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .loja-promos-count {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--green);
+    background: var(--green-light);
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+  }
 
-  /* HIDE PAGES */
-  .page { display: none; }
-  .page.active { display: block; }
+  /* HIDE PAGES */
+  .page { display: none; }
+  .page.active { display: block; }
 
-  @media (min-width: 500px) {
-    body { max-width: 500px; margin: 0 auto; }
-    .bottom-nav { max-width: 500px; left: 50%; transform: translateX(-50%); }
-    .header { border-radius: 0 0 20px 20px; }
-  }
+  @media (min-width: 500px) {
+    body { max-width: 500px; margin: 0 auto; }
+    .bottom-nav { max-width: 500px; left: 50%; transform: translateX(-50%); }
+    .header { border-radius: 0 0 20px 20px; }
+  }
 </style>
 </head>
 <body>
 
+<!-- HEADER -->
 <div class="header">
-  <div class="header-top">
-    <div class="header-logo">🏷️ PromoMutum</div>
-    <div class="header-city">📍 Nova Mutum</div>
-  </div>
-  <div class="search-box">
-    <span class="search-icon">🔍</span>
-    <input type="text" class="search-input" id="searchInput" placeholder="Buscar produto ou loja...">
-    <button class="search-clear" id="searchClear">✕</button>
-  </div>
+  <div class="header-top">
+    <div class="header-logo">🏷️ PromoMutum</div>
+    <div class="header-city">📍 Nova Mutum</div>
+  </div>
+  <div class="search-box">
+    <span class="search-icon">🔍</span>
+    <input type="text" class="search-input" id="searchInput" placeholder="Buscar produto ou loja...">
+    <button class="search-clear" id="searchClear">✕</button>
+  </div>
 </div>
 
+<!-- PAGE: HOME -->
 <div id="pageHome" class="page active">
-  <div class="categories">
-    <div class="categories-scroll" id="categoriesScroll">
-      <button class="cat-chip active" data-cat="all">🔥 Todas</button>
-    </div>
-  </div>
+  <!-- Categories -->
+  <div class="categories">
+    <div class="categories-scroll" id="categoriesScroll">
+      <button class="cat-chip active" data-cat="all">🔥 Todas</button>
+    </div>
+  </div>
 
-  <div class="section">
-    <div class="section-header">
-      <h2 class="section-title" id="promoTitle">Promoções do Dia</h2>
-      <span class="section-count" id="promoCount"></span>
-    </div>
-    <div class="promo-grid" id="promoGrid">
-      <div class="loading">
-        <div class="loading-dots">
-          <div class="loading-dot"></div>
-          <div class="loading-dot"></div>
-          <div class="loading-dot"></div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- Promos -->
+  <div class="section">
+    <div class="section-header">
+      <h2 class="section-title" id="promoTitle">Promoções do Dia</h2>
+      <span class="section-count" id="promoCount"></span>
+    </div>
+    <div class="promo-grid" id="promoGrid">
+      <div class="loading">
+        <div class="loading-dots">
+          <div class="loading-dot"></div>
+          <div class="loading-dot"></div>
+          <div class="loading-dot"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
+<!-- PAGE: LOJAS -->
 <div id="pageLojas" class="page">
-  <div class="section" style="padding-top:20px;">
-    <div class="section-header">
-      <h2 class="section-title">Lojas Parceiras</h2>
-      <span class="section-count" id="lojasCount"></span>
-    </div>
-    <div class="lojas-grid" id="lojasGrid">
-      <div class="loading">
-        <div class="loading-dots">
-          <div class="loading-dot"></div>
-          <div class="loading-dot"></div>
-          <div class="loading-dot"></div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <div class="section" style="padding-top:20px;">
+    <div class="section-header">
+      <h2 class="section-title">Lojas Parceiras</h2>
+      <span class="section-count" id="lojasCount"></span>
+    </div>
+    <div class="lojas-grid" id="lojasGrid">
+      <div class="loading">
+        <div class="loading-dots">
+          <div class="loading-dot"></div>
+          <div class="loading-dot"></div>
+          <div class="loading-dot"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
+<!-- PROMO DETAIL MODAL -->
 <div id="promoModal" class="modal-bg">
-  <div class="modal-sheet" id="promoModalSheet">
-    <div class="modal-handle"></div>
-    <div id="promoModalContent"></div>
-  </div>
+  <div class="modal-sheet" id="promoModalSheet">
+    <div class="modal-handle"></div>
+    <div id="promoModalContent"></div>
+  </div>
 </div>
-  <div id="storeModal" class="modal-bg">
-  <div class="modal-sheet" id="storeModalSheet">
-    <div class="modal-handle"></div>
-    <div class="modal-store-header">
-      <div class="modal-store-name" id="modalStoreName"></div>
-      <div class="modal-store-cat" id="modalStoreCat"></div>
-      <div class="modal-store-info" id="modalStoreInfo"></div>
-    </div>
-    <a class="modal-whatsapp" id="modalWhatsapp" href="#" target="_blank">
-      💬 Chamar no WhatsApp
-    </a>
-    <div class="modal-promos-title">Promoções desta loja</div>
-    <div class="modal-promo-list" id="modalPromoList"></div>
-  </div>
+  <!-- STORE DETAIL MODAL -->
+<div id="storeModal" class="modal-bg">
+  <div class="modal-sheet" id="storeModalSheet">
+    <div class="modal-handle"></div>
+    <div class="modal-store-header">
+      <div class="modal-store-name" id="modalStoreName"></div>
+      <div class="modal-store-cat" id="modalStoreCat"></div>
+      <div class="modal-store-info" id="modalStoreInfo"></div>
+    </div>
+    <a class="modal-whatsapp" id="modalWhatsapp" href="#" target="_blank">
+      💬 Chamar no WhatsApp
+    </a>
+    <div class="modal-promos-title">Promoções desta loja</div>
+    <div class="modal-promo-list" id="modalPromoList"></div>
+  </div>
 </div>
 
+<!-- LIGHTBOX -->
 <div id="lightbox" class="lightbox">
-  <button class="lightbox-close" id="lightboxClose">✕</button>
-  <img id="lightboxImg" src="" alt="">
+  <button class="lightbox-close" id="lightboxClose">✕</button>
+  <img id="lightboxImg" src="" alt="">
 </div>
-  <div class="bottom-nav">
-  <button class="nav-item active" id="navHome">
-    <span class="nav-icon">🏷️</span>
-    <span class="nav-label">Promoções</span>
-  </button>
-  <button class="nav-item" id="navLojas">
-    <span class="nav-icon">🏪</span>
-    <span class="nav-label">Lojas</span>
-  </button>
+  <!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <button class="nav-item active" id="navHome">
+    <span class="nav-icon">🏷️</span>
+    <span class="nav-label">Promoções</span>
+  </button>
+  <button class="nav-item" id="navLojas">
+    <span class="nav-icon">🏪</span>
+    <span class="nav-label">Lojas</span>
+  </button>
 </div>
 
 <script>
 (function() {
-  var sb = window.supabase.createClient(
-    'https://aqbzqpnkhmssgsesobou.supabase.co',
-    'sb_publishable_wwwNgXP4SCHZhTAtJrhfSA_krr1pAIw'
-  );
+  var sb = window.supabase.createClient(
+    'https://aqbzqpnkhmssgsesobou.supabase.co',
+    'sb_publishable_wwwNgXP4SCHZhTAtJrhfSA_krr1pAIw'
+  );
 
-  var allPromos = [];
-  var allLojas = [];
-  var categorias = [];
-  var activeCat = 'all';
-  var searchTerm = '';
+  var allPromos = [];
+  var allLojas = [];
+  var categorias = [];
+  var activeCat = 'all';
+  var searchTerm = '';
 
-  function $(id) { return document.getElementById(id); }
-  function esc(s) { var d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
-  function formatDate(d) { if(!d)return''; var p=d.split('-'); return p[2]+'/'+p[1]+'/'+p[0]; }
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { var d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+  function formatDate(d) { if(!d)return''; var p=d.split('-'); return p[2]+'/'+p[1]+'/'+p[0]; }
 
-  // LOAD DATA
-  async function loadData() {
-    var catResult = await sb.from('categorias_produto').select('*').order('nome');
-    categorias = catResult.data || [];
-    renderCategories();
+  // LOAD DATA
+  async function loadData() {
+    var catResult = await sb.from('categorias_produto').select('*').order('nome');
+    categorias = catResult.data || [];
+    renderCategories();
 
-    var hoje = new Date().toISOString().split('T')[0];
-    var promoResult = await sb.from('promocoes')
-      .select('*, lojas(id, nome, whatsapp, endereco, bairro, instagram, categorias_loja(nome, icone)), categorias_produto(nome, icone)')
-      .eq('ativo', true)
-      .gte('data_fim', hoje)
-      .order('created_at', { ascending: false });
-    allPromos = promoResult.data || [];
+    var hoje = new Date().toISOString().split('T')[0];
+    var promoResult = await sb.from('promocoes')
+      .select('*, lojas(id, nome, whatsapp, endereco, bairro, instagram, categorias_loja(nome, icone)), categorias_produto(nome, icone)')
+      .eq('ativo', true)
+      .gte('data_fim', hoje)
+      .order('created_at', { ascending: false });
+    allPromos = promoResult.data || [];
 
-    var lojasResult = await sb.from('lojas')
-      .select('*, categorias_loja(nome, icone)')
-      .eq('ativo', true)
-      .eq('plano_ativo', true);
-    allLojas = lojasResult.data || [];
+    var lojasResult = await sb.from('lojas')
+      .select('*, categorias_loja(nome, icone)')
+      .eq('ativo', true)
+      .eq('plano_ativo', true);
+    allLojas = lojasResult.data || [];
 
-    renderPromos();
-    renderLojas();
-  }
+    renderPromos();
+    renderLojas();
+  }
 
-  // CATEGORIES
-  function renderCategories() {
-    var scroll = $('categoriesScroll');
-    scroll.innerHTML = '<button class="cat-chip active" data-cat="all">🔥 Todas</button>';
-    categorias.forEach(function(c) {
-      var btn = document.createElement('button');
-      btn.className = 'cat-chip';
-      btn.setAttribute('data-cat', c.id);
-      btn.textContent = c.icone + ' ' + c.nome;
-      scroll.appendChild(btn);
-    });
+  // CATEGORIES
+  function renderCategories() {
+    var scroll = $('categoriesScroll');
+    scroll.innerHTML = '<button class="cat-chip active" data-cat="all">🔥 Todas</button>';
+    categorias.forEach(function(c) {
+      var btn = document.createElement('button');
+      btn.className = 'cat-chip';
+      btn.setAttribute('data-cat', c.id);
+      btn.textContent = c.icone + ' ' + c.nome;
+      scroll.appendChild(btn);
+    });
 
-    scroll.querySelectorAll('.cat-chip').forEach(function(chip) {
-      chip.addEventListener('click', function() {
-        scroll.querySelectorAll('.cat-chip').forEach(function(c){ c.classList.remove('active'); });
-        this.classList.add('active');
-        activeCat = this.getAttribute('data-cat');
-        renderPromos();
-      });
-    });
-  }
+    scroll.querySelectorAll('.cat-chip').forEach(function(chip) {
+      chip.addEventListener('click', function() {
+        scroll.querySelectorAll('.cat-chip').forEach(function(c){ c.classList.remove('active'); });
+        this.classList.add('active');
+        activeCat = this.getAttribute('data-cat');
+        renderPromos();
+      });
+    });
+  }
 
-  // PROMOS
-  function getFilteredPromos() {
-    var filtered = allPromos;
-    if (activeCat !== 'all') {
-      filtered = filtered.filter(function(p) { return p.categoria_produto_id === activeCat; });
-    }
-    if (searchTerm) {
-      var term = searchTerm.toLowerCase();
-      filtered = filtered.filter(function(p) {
-        var prodMatch = p.produto_nome.toLowerCase().includes(term);
-        var lojaMatch = p.lojas && p.lojas.nome.toLowerCase().includes(term);
-        return prodMatch || lojaMatch;
-      });
-    }
-    return filtered;
-  }
+  // PROMOS
+  function getFilteredPromos() {
+    var filtered = allPromos;
+    if (activeCat !== 'all') {
+      filtered = filtered.filter(function(p) { return p.categoria_produto_id === activeCat; });
+    }
+    if (searchTerm) {
+      var term = searchTerm.toLowerCase();
+      filtered = filtered.filter(function(p) {
+        var prodMatch = p.produto_nome.toLowerCase().includes(term);
+        var lojaMatch = p.lojas && p.lojas.nome.toLowerCase().includes(term);
+        return prodMatch || lojaMatch;
+      });
+    }
+    return filtered;
+  }
 
-  function renderPromos() {
-    var grid = $('promoGrid');
-    var filtered = getFilteredPromos();
+  function renderPromos() {
+    var grid = $('promoGrid');
+    var filtered = getFilteredPromos();
 
-    $('promoCount').textContent = filtered.length + ' ofertas';
+    $('promoCount').textContent = filtered.length + ' ofertas';
 
-    if (searchTerm) {
-      $('promoTitle').textContent = 'Resultados para "' + esc(searchTerm) + '"';
-    } else if (activeCat !== 'all') {
-      var cat = categorias.find(function(c){ return c.id === activeCat; });
-      $('promoTitle').textContent = cat ? cat.icone + ' ' + cat.nome : 'Promoções';
-    } else {
-      $('promoTitle').textContent = 'Promoções do Dia';
-    }
+    if (searchTerm) {
+      $('promoTitle').textContent = 'Resultados para "' + esc(searchTerm) + '"';
+    } else if (activeCat !== 'all') {
+      var cat = categorias.find(function(c){ return c.id === activeCat; });
+      $('promoTitle').textContent = cat ? cat.icone + ' ' + cat.nome : 'Promoções';
+    } else {
+      $('promoTitle').textContent = 'Promoções do Dia';
+    }
 
-    if (!filtered.length) {
-      grid.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div>' +
-        '<div class="empty-title">Nenhuma promoção encontrada</div>' +
-        '<div class="empty-desc">Tente buscar outro produto ou categoria</div></div>';
-      return;
-    }
+    if (!filtered.length) {
+      grid.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div>' +
+        '<div class="empty-title">Nenhuma promoção encontrada</div>' +
+        '<div class="empty-desc">Tente buscar outro produto ou categoria</div></div>';
+      return;
+    }
 
-    // Sort by lowest price
-    filtered.sort(function(a, b) { return a.preco_promocional - b.preco_promocional; });
+    // Sort by lowest price
+    filtered.sort(function(a, b) { return a.preco_promocional - b.preco_promocional; });
 
-    grid.innerHTML = filtered.map(function(p) {
-      var emoji = (p.categorias_produto && p.categorias_produto.icone) || '📦';
-      var lojaNome = (p.lojas && p.lojas.nome) || 'Loja';
-      var catNome = (p.categorias_produto && p.categorias_produto.nome) || '';
-      var oldPrice = p.preco_original ? '<div class="promo-old-price">R$ ' + Number(p.preco_original).toFixed(2) + '</div>' : '';
-      var discount = '';
-      if (p.preco_original && p.preco_original > p.preco_promocional) {
-        var pct = Math.round((1 - p.preco_promocional / p.preco_original) * 100);
-        discount = '<div class="promo-discount">-' + pct + '%</div>';
-      }
-      var lojaId = p.lojas ? p.lojas.id : '';
+    grid.innerHTML = filtered.map(function(p) {
+      var emoji = (p.categorias_produto && p.categorias_produto.icone) || '📦';
+      var lojaNome = (p.lojas && p.lojas.nome) || 'Loja';
+      var catNome = (p.categorias_produto && p.categorias_produto.nome) || '';
+      var oldPrice = p.preco_original ? '<div class="promo-old-price">R$ ' + Number(p.preco_original).toFixed(2) + '</div>' : '';
+      var discount = '';
+      if (p.preco_original && p.preco_original > p.preco_promocional) {
+        var pct = Math.round((1 - p.preco_promocional / p.preco_original) * 100);
+        discount = '<div class="promo-discount">-' + pct + '%</div>';
+      }
+      var lojaId = p.lojas ? p.lojas.id : '';
 
-     return '<div class="promo-item" data-promo="' + p.id + '" data-loja="' + lojaId + '">' +
-        (p.imagem_url ? '<img class="promo-img-box" src="' + p.imagem_url + '" onerror="this.style.display=\'none\'">' : '<div class="promo-emoji-box">' + emoji + '</div>') +
-        '<div class="promo-content">' +
-          '<div class="promo-product">' + esc(p.produto_nome) + '</div>' +
-          '<div class="promo-store">🏪 ' + esc(lojaNome) +
-            '<span class="promo-store-dot"></span>' + catNome + '</div>' +
-        '</div>' +
-        '<div class="promo-right">' +
-          oldPrice +
-          '<div class="promo-new-price">R$' + Number(p.preco_promocional).toFixed(2) + '</div>' +
-          '<div class="promo-unit">/' + (p.unidade || 'un') + '</div>' +
-          discount +
-        '</div></div>';
-    }).join('');
+     return '<div class="promo-item" data-promo="' + p.id + '" data-loja="' + lojaId + '">' +
+        (p.imagem_url ? '<img class="promo-img-box" src="' + p.imagem_url + '" onerror="this.style.display=\'none\'">' : '<div class="promo-emoji-box">' + emoji + '</div>') +
+        '<div class="promo-content">' +
+          '<div class="promo-product">' + esc(p.produto_nome) + '</div>' +
+          '<div class="promo-store">🏪 ' + esc(lojaNome) +
+            '<span class="promo-store-dot"></span>' + catNome + '</div>' +
+        '</div>' +
+        '<div class="promo-right">' +
+          oldPrice +
+          '<div class="promo-new-price">R$' + Number(p.preco_promocional).toFixed(2) + '</div>' +
+          '<div class="promo-unit">/' + (p.unidade || 'un') + '</div>' +
+          discount +
+        '</div></div>';
+    }).join('');
 
-    grid.querySelectorAll('.promo-item').forEach(function(item) {
-      item.addEventListener('click', function() {
-        var promoId = this.getAttribute('data-promo');
-        var lojaId = this.getAttribute('data-loja');
-        if (promoId) openPromoModal(promoId);
-        else if (lojaId) openStoreModal(lojaId);
-      });
-    });}
+    grid.querySelectorAll('.promo-item').forEach(function(item) {
+      item.addEventListener('click', function() {
+        var promoId = this.getAttribute('data-promo');
+        var lojaId = this.getAttribute('data-loja');
+        if (promoId) openPromoModal(promoId);
+        else if (lojaId) openStoreModal(lojaId);
+      });
+    });}
 
-  // LOJAS
-  function renderLojas() {
-    var grid = $('lojasGrid');
-    $('lojasCount').textContent = allLojas.length + ' lojas';
+  // LOJAS
+  function renderLojas() {
+    var grid = $('lojasGrid');
+    $('lojasCount').textContent = allLojas.length + ' lojas';
 
-    if (!allLojas.length) {
-      grid.innerHTML = '<div class="empty"><div class="empty-icon">🏪</div>' +
-        '<div class="empty-title">Nenhuma loja parceira ainda</div></div>';
-      return;
-    }
+    if (!allLojas.length) {
+      grid.innerHTML = '<div class="empty"><div class="empty-icon">🏪</div>' +
+        '<div class="empty-title">Nenhuma loja parceira ainda</div></div>';
+      return;
+    }
 
-    grid.innerHTML = allLojas.map(function(l) {
-      var initial = l.nome.charAt(0).toUpperCase();
-      var catNome = (l.categorias_loja && l.categorias_loja.nome) || '';
-      var catIcon = (l.categorias_loja && l.categorias_loja.icone) || '🏪';
-      var promoCount = allPromos.filter(function(p) { return p.loja_id === l.id; }).length;
-      var bairro = l.bairro ? ' • ' + l.bairro : '';
+    grid.innerHTML = allLojas.map(function(l) {
+      var initial = l.nome.charAt(0).toUpperCase();
+      var catNome = (l.categorias_loja && l.categorias_loja.nome) || '';
+      var catIcon = (l.categorias_loja && l.categorias_loja.icone) || '🏪';
+      var promoCount = allPromos.filter(function(p) { return p.loja_id === l.id; }).length;
+      var bairro = l.bairro ? ' • ' + l.bairro : '';
 
-      return '<div class="loja-card" data-loja="' + l.id + '">' +
-        '<div class="loja-avatar">' + initial + '</div>' +
-        '<div class="loja-info">' +
-          '<div class="loja-name">' + esc(l.nome) + '</div>' +
-          '<div class="loja-detail">' + catIcon + ' ' + catNome + bairro + '</div>' +
-        '</div>' +
-        (promoCount > 0 ? '<div class="loja-promos-count">' + promoCount + ' ofertas</div>' : '') +
-        '</div>';
-    }).join('');
+      return '<div class="loja-card" data-loja="' + l.id + '">' +
+        '<div class="loja-avatar">' + initial + '</div>' +
+        '<div class="loja-info">' +
+          '<div class="loja-name">' + esc(l.nome) + '</div>' +
+          '<div class="loja-detail">' + catIcon + ' ' + catNome + bairro + '</div>' +
+        '</div>' +
+        (promoCount > 0 ? '<div class="loja-promos-count">' + promoCount + ' ofertas</div>' : '') +
+        '</div>';
+    }).join('');
 
-    grid.querySelectorAll('.loja-card').forEach(function(card) {
-      card.addEventListener('click', function() {
-        openStoreModal(this.getAttribute('data-loja'));
-      });
-    });
-  }
+    grid.querySelectorAll('.loja-card').forEach(function(card) {
+      card.addEventListener('click', function() {
+        openStoreModal(this.getAttribute('data-loja'));
+      });
+    });
+  }
 
-  // STORE MODAL
-  function openStoreModal(lojaId) {
-    var loja = allLojas.find(function(l) { return l.id === lojaId; });
-    if (!loja) {
-      var promoWithLoja = allPromos.find(function(p) { return p.lojas && p.lojas.id === lojaId; });
-      if (promoWithLoja) loja = promoWithLoja.lojas;
-    }
-    if (!loja) return;
+  // STORE MODAL
+  function openStoreModal(lojaId) {
+    var loja = allLojas.find(function(l) { return l.id === lojaId; });
+    if (!loja) {
+      var promoWithLoja = allPromos.find(function(p) { return p.lojas && p.lojas.id === lojaId; });
+      if (promoWithLoja) loja = promoWithLoja.lojas;
+    }
+    if (!loja) return;
 
-    $('modalStoreName').textContent = loja.nome;
-    var catInfo = loja.categorias_loja ? loja.categorias_loja.icone + ' ' + loja.categorias_loja.nome : '';
-    $('modalStoreCat').textContent = catInfo;
+    $('modalStoreName').textContent = loja.nome;
+    var catInfo = loja.categorias_loja ? loja.categorias_loja.icone + ' ' + loja.categorias_loja.nome : '';
+    $('modalStoreCat').textContent = catInfo;
 
-    var info = '';
-    if (loja.endereco) info += '<div class="modal-info-row"><span class="modal-info-icon">📍</span>' + esc(loja.endereco) + (loja.bairro ? ', ' + esc(loja.bairro) : '') + '</div>';
-    if (loja.instagram) info += '<div class="modal-info-row"><span class="modal-info-icon">📸</span>' + esc(loja.instagram) + '</div>';
-    $('modalStoreInfo').innerHTML = info;
+    var info = '';
+    if (loja.endereco) info += '<div class="modal-info-row"><span class="modal-info-icon">📍</span>' + esc(loja.endereco) + (loja.bairro ? ', ' + esc(loja.bairro) : '') + '</div>';
+    if (loja.instagram) info += '<div class="modal-info-row"><span class="modal-info-icon">📸</span>' + esc(loja.instagram) + '</div>';
+    $('modalStoreInfo').innerHTML = info;
 
-    if (loja.whatsapp) {
-      var num = loja.whatsapp.replace(/\D/g, '');
-      if (num.length <= 11) num = '55' + num;
-      $('modalWhatsapp').href = 'https://wa.me/' + num;
-      $('modalWhatsapp').style.display = 'flex';
-    } else {
-      $('modalWhatsapp').style.display = 'none';
-    }
+    if (loja.whatsapp) {
+      var num = loja.whatsapp.replace(/\D/g, '');
+      if (num.length <= 11) num = '55' + num;
+      $('modalWhatsapp').href = 'https://wa.me/' + num;
+      $('modalWhatsapp').style.display = 'flex';
+    } else {
+      $('modalWhatsapp').style.display = 'none';
+    }
 
-    var storePromos = allPromos.filter(function(p) { return p.loja_id === lojaId || (p.lojas && p.lojas.id === lojaId); });
-    var list = $('modalPromoList');
-    if (storePromos.length) {
-      list.innerHTML = storePromos.map(function(p) {
-        var emoji = (p.categorias_produto && p.categorias_produto.icone) || '📦';
-        var cat = (p.categorias_produto && p.categorias_produto.nome) || '';
-        var imgHtml = p.imagem_url ? '<img src="' + p.imagem_url + '" class="modal-promo-item-img" style="object-fit:contain;background:#f5f5f5;" onclick="abrirLightbox(\'' + p.imagem_url + '\')">' : '';
-        var dataFim = '';
-        if (p.data_fim) {
-          var meses = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
-          var partes = p.data_fim.split('-');
-          dataFim = 'até ' + parseInt(partes[2]) + ' de ' + meses[parseInt(partes[1])-1] + ' ' + partes[0];
-        }
-        var desconto = '';
-        if (p.preco_original && p.preco_original > p.preco_promocional) {
-          var pct = Math.round((1 - p.preco_promocional / p.preco_original) * 100);
-          desconto = ' <span style="background:#e74c3c;color:white;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;">-' + pct + '%</span>';
-        }
-        var precoOriginal = p.preco_original ? '<span style="text-decoration:line-through;color:#aaa;font-size:12px;margin-right:4px;">R$' + Number(p.preco_original).toFixed(2) + '</span>' : '';
-        return '<div class="modal-promo-item">' +
-          imgHtml +
-          '<div class="modal-promo-item-body">' +
-          '<div class="modal-promo-emoji">' + emoji + '</div>' +
-          '<div class="modal-promo-info"><div class="modal-promo-name">' + esc(p.produto_nome) + '</div>' +
-          '<div class="modal-promo-cat">' + cat + ' • /' + (p.unidade||'un') + '</div>' +
-          (dataFim ? '<div style="font-size:11px;color:#888;margin-top:2px;">📅 ' + dataFim + '</div>' : '') +
-          '</div>' +
-          '<div style="text-align:right;">' + precoOriginal + desconto + '<div class="modal-promo-price">R$' + Number(p.preco_promocional).toFixed(2) + '</div></div>' +
-          '</div></div>';} else {
-      list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-muted);">Nenhuma promoção no momento</div>';
-    }
+    var storePromos = allPromos.filter(function(p) { return p.loja_id === lojaId || (p.lojas && p.lojas.id === lojaId); });
+   var list = $('modalPromoList');
+    if (storePromos.length) {
+      list.innerHTML = storePromos.map(function(p) {
+        var emoji = (p.categorias_produto && p.categorias_produto.icone) || '📦';
+        var cat = (p.categorias_produto && p.categorias_produto.nome) || '';
+        var imgHtml = p.imagem_url ? '<img src="' + p.imagem_url + '" class="modal-promo-item-img" style="object-fit:contain;background:#f5f5f5;" onclick="abrirLightbox(\'' + p.imagem_url + '\')">' : '';
+        var dataFim = '';
+        if (p.data_fim) {
+          var meses = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+          var partes = p.data_fim.split('-');
+          dataFim = 'até ' + parseInt(partes[2]) + ' de ' + meses[parseInt(partes[1])-1] + ' ' + partes[0];
+        }
+        var desconto = '';
+        if (p.preco_original && p.preco_original > p.preco_promocional) {
+          var pct = Math.round((1 - p.preco_promocional / p.preco_original) * 100);
+          desconto = ' <span style="background:#e74c3c;color:white;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;">-' + pct + '%</span>';
+        }
+        var precoOriginal = p.preco_original ? '<span style="text-decoration:line-through;color:#aaa;font-size:12px;margin-right:4px;">R$' + Number(p.preco_original).toFixed(2) + '</span>' : '';
+        return '<div class="modal-promo-item">' +
+          imgHtml +
+          '<div class="modal-promo-item-body">' +
+          '<div class="modal-promo-emoji">' + emoji + '</div>' +
+          '<div class="modal-promo-info"><div class="modal-promo-name">' + esc(p.produto_nome) + '</div>' +
+          '<div class="modal-promo-cat">' + cat + ' • /' + (p.unidade||'un') + '</div>' +
+          (dataFim ? '<div style="font-size:11px;color:#888;margin-top:2px;">📅 ' + dataFim + '</div>' : '') +
+          '</div>' +
+          '<div style="text-align:right;">' + precoOriginal + desconto + '<div class="modal-promo-price">R$' + Number(p.preco_promocional).toFixed(2) + '</div></div>' +
+          '</div></div>';} else {
+      list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-muted);">Nenhuma promoção no momento</div>';
+    }
 
-    $('storeModal').classList.add('active');
-  }
+    $('storeModal').classList.add('active');
+  }
 
-  // PROMO MODAL
-  function openPromoModal(promoId) {
-    var p = allPromos.find(function(x) { return x.id === promoId; });
-    if (!p) return;
+  // CLOSE MODAL
+ // PROMO MODAL
+  function openPromoModal(promoId) {
+    var p = allPromos.find(function(x) { return x.id === promoId; });
+    if (!p) return;
 
-    var meses = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
-    var dataFim = '';
-    if (p.data_fim) {
-      var partes = p.data_fim.split('-');
-      dataFim = parseInt(partes[2]) + ' de ' + meses[parseInt(partes[1])-1] + ' de ' + partes[0];
-    }
-    var lojaNome = p.lojas ? p.lojas.nome : '';
-    var lojaWpp = p.lojas ? p.lojas.whatsapp : '';
-    var emoji = (p.categorias_produto && p.categorias_produto.icone) || '📦';
-    var precoOriginal = p.preco_original ? 'De <s>R$' + Number(p.preco_original).toFixed(2) + '</s> por ' : '';
+    var meses = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+    var dataFim = '';
+    if (p.data_fim) {
+      var partes = p.data_fim.split('-');
+      dataFim = parseInt(partes[2]) + ' de ' + meses[parseInt(partes[1])-1] + ' de ' + partes[0];
+    }
+    var lojaNome = p.lojas ? p.lojas.nome : '';
+    var lojaWpp = p.lojas ? p.lojas.whatsapp : '';
+    var emoji = (p.categorias_produto && p.categorias_produto.icone) || '📦';
+    var precoOriginal = p.preco_original ? 'De <s>R$' + Number(p.preco_original).toFixed(2) + '</s> por ' : '';
 
-    var wppBtn = '';
-    if (lojaWpp) {
-      var num = lojaWpp.replace(/\D/g, '');
-      if (num.length <= 11) num = '55' + num;
-      wppBtn = '<a href="https://wa.me/' + num + '" target="_blank" class="modal-whatsapp">💬 Chamar no WhatsApp</a>';
-    }
+    var wppBtn = '';
+    if (lojaWpp) {
+      var num = lojaWpp.replace(/\D/g, '');
+      if (num.length <= 11) num = '55' + num;
+      wppBtn = '<a href="https://wa.me/' + num + '" target="_blank" class="modal-whatsapp">💬 Chamar no WhatsApp</a>';
+    }
 
-    $('promoModalContent').innerHTML =
-      '<div style="padding:20px 24px 8px;">' +
-        '<div style="font-size:13px;color:var(--text-sec);margin-bottom:4px;">🏪 ' + esc(lojaNome) + '</div>' +
-        '<div style="font-size:20px;font-weight:800;">' + emoji + ' ' + esc(p.produto_nome) + '</div>' +
-        '<div style="font-size:15px;margin-top:6px;">' + precoOriginal + '<span style="color:var(--green);font-weight:800;font-size:22px;">R$' + Number(p.preco_promocional).toFixed(2) + '</span> /' + (p.unidade||'un') + '</div>' +
-        (dataFim ? '<div style="font-size:12px;color:#888;margin-top:4px;">📅 até ' + dataFim + '</div>' : '') +
-      '</div>' +
-      (p.imagem_url ? '<img src="' + p.imagem_url + '" style="width:100%;max-height:300px;object-fit:contain;background:#f5f5f5;cursor:pointer;" onclick="abrirLightbox(\'' + p.imagem_url + '\')">' : '') +
-      '<div style="padding:16px 24px 24px;">' + wppBtn + '</div>';
+    $('promoModalContent').innerHTML =
+      '<div style="padding:20px 24px 8px;">' +
+        '<div style="font-size:13px;color:var(--text-sec);margin-bottom:4px;">🏪 ' + esc(lojaNome) + '</div>' +
+        '<div style="font-size:20px;font-weight:800;">' + emoji + ' ' + esc(p.produto_nome) + '</div>' +
+        '<div style="font-size:15px;margin-top:6px;">' + precoOriginal + '<span style="color:var(--green);font-weight:800;font-size:22px;">R$' + Number(p.preco_promocional).toFixed(2) + '</span> /' + (p.unidade||'un') + '</div>' +
+        (dataFim ? '<div style="font-size:12px;color:#888;margin-top:4px;">📅 até ' + dataFim + '</div>' : '') +
+      '</div>' +
+      (p.imagem_url ? '<img src="' + p.imagem_url + '" style="width:100%;max-height:300px;object-fit:contain;background:#f5f5f5;cursor:pointer;" onclick="abrirLightbox(\'' + p.imagem_url + '\')">' : '') +
+      '<div style="padding:16px 24px 24px;">' + wppBtn + '</div>';
 
-    $('promoModal').classList.add('active');
-  }
+    $('promoModal').classList.add('active');
+  }
 
-  $('promoModal').addEventListener('click', function(e) {
-    if (e.target === this) this.classList.remove('active');
-  });
-  $('storeModal').addEventListener('click', function(e) {
-    if (e.target === this) this.classList.remove('active');
-  });
+  $('promoModal').addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('active');
+  });
+  $('storeModal').addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('active');
+  });
 
-  // SEARCH
-  var searchTimeout;
-  $('searchInput').addEventListener('input', function() {
-    var val = this.value.trim();
-    $('searchClear').style.display = val ? 'flex' : 'none';
-    clearTimeout(searchTimeout);
-    searchTimeout = setTimeout(function() {
-      searchTerm = val;
-      renderPromos();
-    }, 300);
-  });
+  // SEARCH
+  var searchTimeout;
+  $('searchInput').addEventListener('input', function() {
+    var val = this.value.trim();
+    $('searchClear').style.display = val ? 'flex' : 'none';
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(function() {
+      searchTerm = val;
+      renderPromos();
+    }, 300);
+  });
 
-  $('searchClear').addEventListener('click', function() {
-    $('searchInput').value = '';
-    this.style.display = 'none';
-    searchTerm = '';
-    renderPromos();
-  });
+  $('searchClear').addEventListener('click', function() {
+    $('searchInput').value = '';
+    this.style.display = 'none';
+    searchTerm = '';
+    renderPromos();
+  });
 
-  // NAV
-  $('navHome').addEventListener('click', function() {
-    $('pageHome').classList.add('active');
-    $('pageLojas').classList.remove('active');
-    this.classList.add('active');
-    $('navLojas').classList.remove('active');
-  });
+  // NAV
+  $('navHome').addEventListener('click', function() {
+    $('pageHome').classList.add('active');
+    $('pageLojas').classList.remove('active');
+    this.classList.add('active');
+    $('navLojas').classList.remove('active');
+  });
 
-  $('navLojas').addEventListener('click', function() {
-    $('pageLojas').classList.add('active');
-    $('pageHome').classList.remove('active');
-    this.classList.add('active');
-    $('navHome').classList.remove('active');
-  });
+  $('navLojas').addEventListener('click', function() {
+    $('pageLojas').classList.add('active');
+    $('pageHome').classList.remove('active');
+    this.classList.add('active');
+    $('navHome').classList.remove('active');
+  });
 
-  // LIGHTBOX
-  window.abrirLightbox = function(url) {
-    $('lightboxImg').src = url;
-    $('lightbox').classList.add('active');
-  };
-  function fecharLightbox() {
-    $('lightbox').classList.remove('active');
-    $('lightboxImg').src = '';
-  }
-  $('lightbox').addEventListener('click', function(e) {
-    if (e.target === this) fecharLightbox();
-  });
-  $('lightboxClose').addEventListener('click', fecharLightbox);
-  loadData();
+  // INIT
+ // LIGHTBOX
+  window.abrirLightbox = function(url) {
+    $('lightboxImg').src = url;
+    $('lightbox').classList.add('active');
+  };
+  function fecharLightbox() {
+    $('lightbox').classList.remove('active');
+    $('lightboxImg').src = '';
+  }
+  $('lightbox').addEventListener('click', function(e) {
+    if (e.target === this) fecharLightbox();
+  });
+  $('lightboxClose').addEventListener('click', fecharLightbox);
+  loadData();
 })();
 </script>
 </body>
