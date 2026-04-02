@@ -609,9 +609,11 @@
     categorias = catResult.data || [];
     renderCategories();
 
+    var hoje = new Date().toISOString().split('T')[0];
     var promoResult = await sb.from('promocoes')
       .select('*, lojas(id, nome, whatsapp, endereco, bairro, instagram, categorias_loja(nome, icone)), categorias_produto(nome, icone)')
       .eq('ativo', true)
+      .gte('data_fim', hoje)
       .order('created_at', { ascending: false });
     allPromos = promoResult.data || [];
 
