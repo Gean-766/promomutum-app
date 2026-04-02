@@ -377,14 +377,35 @@
     flex-direction: column;
     gap: 10px;
   }
-  .modal-promo-item {
+ .modal-promo-item {
+    background: var(--bg);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .modal-promo-item-img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    cursor: pointer;
+    display: block;
+  }
+  .modal-promo-item-body {
     display: flex;
     align-items: center;
     gap: 12px;
     padding: 12px;
-    background: var(--bg);
-    border-radius: var(--radius-sm);
   }
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.95);
+    z-index: 999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+
   .modal-promo-emoji { font-size: 20px; }
   .modal-promo-info { flex: 1; }
   .modal-promo-name { font-size: 14px; font-weight: 700; }
@@ -589,7 +610,11 @@
   </div>
 </div>
 
-<!-- BOTTOM NAV -->
+<!-- LIGHTBOX -->
+<div id="lightbox" class="lightbox">
+  <img id="lightboxImg" src="" alt="">
+</div>
+  <!-- BOTTOM NAV -->
 <div class="bottom-nav">
   <button class="nav-item active" id="navHome">
     <span class="nav-icon">🏷️</span>
@@ -804,17 +829,19 @@
     }
 
     var storePromos = allPromos.filter(function(p) { return p.loja_id === lojaId || (p.lojas && p.lojas.id === lojaId); });
-    var list = $('modalPromoList');
+   var list = $('modalPromoList');
     if (storePromos.length) {
       list.innerHTML = storePromos.map(function(p) {
         var emoji = (p.categorias_produto && p.categorias_produto.icone) || '📦';
         var cat = (p.categorias_produto && p.categorias_produto.nome) || '';
-       var imgHtml = p.imagem_url ? '<img src="' + p.imagem_url + '" class="modal-promo-img" onerror="this.style.display=\'none\'">' : '';
-        return imgHtml + '<div class="modal-promo-item">' +
+        var imgHtml = p.imagem_url ? '<img src="' + p.imagem_url + '" class="modal-promo-item-img" onclick="abrirLightbox(\'' + p.imagem_url + '\')">' : '';
+        return '<div class="modal-promo-item">' +
+          imgHtml +
+          '<div class="modal-promo-item-body">' +
           '<div class="modal-promo-emoji">' + emoji + '</div>' +
           '<div class="modal-promo-info"><div class="modal-promo-name">' + esc(p.produto_nome) + '</div>' +
           '<div class="modal-promo-cat">' + cat + ' • /' + (p.unidade||'un') + '</div></div>' +
-          '<div class="modal-promo-price">R$' + Number(p.preco_promocional).toFixed(2) + '</div></div>';
+          '<div class="modal-promo-price">R$' + Number(p.preco_promocional).toFixed(2) + '</div></div></div>';
       }).join('');
     } else {
       list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-muted);">Nenhuma promoção no momento</div>';
@@ -863,6 +890,15 @@
   });
 
   // INIT
+ // LIGHTBOX
+  window.abrirLightbox = function(url) {
+    $('lightboxImg').src = url;
+    $('lightbox').classList.add('active');
+  };
+  $('lightbox').addEventListener('click', function() {
+    this.classList.remove('active');
+    $('lightboxImg').src = '';
+  });
   loadData();
 })();
 </script>
