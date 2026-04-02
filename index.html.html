@@ -896,7 +896,9 @@
           (dataFim ? '<div style="font-size:11px;color:#888;margin-top:2px;">📅 ' + dataFim + '</div>' : '') +
           '</div>' +
           '<div style="text-align:right;">' + precoOriginal + desconto + '<div class="modal-promo-price">R$' + Number(p.preco_promocional).toFixed(2) + '</div></div>' +
-          '</div></div>';} else {
+          '</div></div>';
+      }).join('');
+    } else {
       list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-muted);">Nenhuma promoção no momento</div>';
     }
 
