@@ -624,7 +624,14 @@
   </div>
 </div>
 
-<!-- STORE DETAIL MODAL -->
+<!-- PROMO DETAIL MODAL -->
+<div id="promoModal" class="modal-bg">
+  <div class="modal-sheet" id="promoModalSheet">
+    <div class="modal-handle"></div>
+    <div id="promoModalContent"></div>
+  </div>
+</div>
+  <!-- STORE DETAIL MODAL -->
 <div id="storeModal" class="modal-bg">
   <div class="modal-sheet" id="storeModalSheet">
     <div class="modal-handle"></div>
@@ -775,7 +782,7 @@
       }
       var lojaId = p.lojas ? p.lojas.id : '';
 
-     return '<div class="promo-item" data-loja="' + lojaId + '">' +
+     return '<div class="promo-item" data-promo="' + p.id + '" data-loja="' + lojaId + '">' +
         (p.imagem_url ? '<img class="promo-img-box" src="' + p.imagem_url + '" onerror="this.style.display=\'none\'">' : '<div class="promo-emoji-box">' + emoji + '</div>') +
         '<div class="promo-content">' +
           '<div class="promo-product">' + esc(p.produto_nome) + '</div>' +
@@ -792,11 +799,12 @@
 
     grid.querySelectorAll('.promo-item').forEach(function(item) {
       item.addEventListener('click', function() {
+        var promoId = this.getAttribute('data-promo');
         var lojaId = this.getAttribute('data-loja');
-        if (lojaId) openStoreModal(lojaId);
+        if (promoId) openPromoModal(promoId);
+        else if (lojaId) openStoreModal(lojaId);
       });
-    });
-  }
+    });}
 
   // LOJAS
   function renderLojas() {
@@ -896,6 +904,45 @@
   }
 
   // CLOSE MODAL
+ // PROMO MODAL
+  function openPromoModal(promoId) {
+    var p = allPromos.find(function(x) { return x.id === promoId; });
+    if (!p) return;
+
+    var meses = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+    var dataFim = '';
+    if (p.data_fim) {
+      var partes = p.data_fim.split('-');
+      dataFim = parseInt(partes[2]) + ' de ' + meses[parseInt(partes[1])-1] + ' de ' + partes[0];
+    }
+    var lojaNome = p.lojas ? p.lojas.nome : '';
+    var lojaWpp = p.lojas ? p.lojas.whatsapp : '';
+    var emoji = (p.categorias_produto && p.categorias_produto.icone) || '📦';
+    var precoOriginal = p.preco_original ? 'De <s>R$' + Number(p.preco_original).toFixed(2) + '</s> por ' : '';
+
+    var wppBtn = '';
+    if (lojaWpp) {
+      var num = lojaWpp.replace(/\D/g, '');
+      if (num.length <= 11) num = '55' + num;
+      wppBtn = '<a href="https://wa.me/' + num + '" target="_blank" class="modal-whatsapp">💬 Chamar no WhatsApp</a>';
+    }
+
+    $('promoModalContent').innerHTML =
+      '<div style="padding:20px 24px 8px;">' +
+        '<div style="font-size:13px;color:var(--text-sec);margin-bottom:4px;">🏪 ' + esc(lojaNome) + '</div>' +
+        '<div style="font-size:20px;font-weight:800;">' + emoji + ' ' + esc(p.produto_nome) + '</div>' +
+        '<div style="font-size:15px;margin-top:6px;">' + precoOriginal + '<span style="color:var(--green);font-weight:800;font-size:22px;">R$' + Number(p.preco_promocional).toFixed(2) + '</span> /' + (p.unidade||'un') + '</div>' +
+        (dataFim ? '<div style="font-size:12px;color:#888;margin-top:4px;">📅 até ' + dataFim + '</div>' : '') +
+      '</div>' +
+      (p.imagem_url ? '<img src="' + p.imagem_url + '" style="width:100%;max-height:300px;object-fit:contain;background:#f5f5f5;cursor:pointer;" onclick="abrirLightbox(\'' + p.imagem_url + '\')">' : '') +
+      '<div style="padding:16px 24px 24px;">' + wppBtn + '</div>';
+
+    $('promoModal').classList.add('active');
+  }
+
+  $('promoModal').addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('active');
+  });
   $('storeModal').addEventListener('click', function(e) {
     if (e.target === this) this.classList.remove('active');
   });
