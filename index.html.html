@@ -905,16 +905,23 @@
       var partes = p.data_fim.split('-');
       dataFim = parseInt(partes[2]) + ' de ' + meses[parseInt(partes[1])-1] + ' de ' + partes[0];
     }
-    var lojaNome = p.lojas ? p.lojas.nome : '';
-    var lojaWpp = p.lojas ? p.lojas.whatsapp : '';
+    var loja = p.lojas || null;
+    var lojaNome = loja ? loja.nome : '';
+    var lojaWpp = loja ? loja.whatsapp : '';
     var emoji = (p.categorias_produto && p.categorias_produto.icone) || '📦';
     var precoOriginal = p.preco_original ? 'De <s>R$' + Number(p.preco_original).toFixed(2) + '</s> por ' : '';
+
+    var mapaBtn = '';
+    if (loja && loja.endereco) {
+      var enderecoMaps = encodeURIComponent(loja.endereco + ' ' + (loja.bairro||'') + ' Nova Mutum MT');
+      mapaBtn = '<a href="https://www.google.com/maps/search/?api=1&query=' + enderecoMaps + '" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;background:#4285f4;color:white;border-radius:16px;font-weight:700;font-size:15px;text-decoration:none;">📍 Como Chegar</a>';
+    }
 
     var wppBtn = '';
     if (lojaWpp) {
       var num = lojaWpp.replace(/\D/g, '');
       if (num.length <= 11) num = '55' + num;
-      wppBtn = '<a href="https://wa.me/' + num + '" target="_blank" class="modal-whatsapp">💬 Chamar no WhatsApp</a>';
+      wppBtn = '<a href="https://wa.me/' + num + '" target="_blank" class="modal-whatsapp" style="margin:0;">💬 Chamar no WhatsApp</a>';
     }
 
     $('promoModalContent').innerHTML =
@@ -925,7 +932,7 @@
         (dataFim ? '<div style="font-size:12px;color:#888;margin-top:4px;">📅 até ' + dataFim + '</div>' : '') +
       '</div>' +
       (p.imagem_url ? '<img src="' + p.imagem_url + '" style="width:100%;max-height:300px;object-fit:contain;background:#f5f5f5;cursor:pointer;" onclick="abrirLightbox(\'' + p.imagem_url + '\')">' : '') +
-      '<div style="padding:16px 24px 24px;">' + wppBtn + '</div>';
+      '<div style="padding:16px 24px 24px;display:flex;flex-direction:column;gap:10px;">' + mapaBtn + wppBtn + '</div>';
 
     $('promoModal').classList.add('active');
   }
